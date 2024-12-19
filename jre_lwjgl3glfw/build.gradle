@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.lwjgl.glfw'
+
+configurations.default.setCanBeResolved(true)
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveBaseName = "lwjgl-glfw-classes"
+    destinationDirectory.set(file("../build/lwjgl3/"))
+    doLast {
+        File versionFile = file("../build/lwjgl3/version")
+        versionFile.write(String.valueOf(new Date().getTime()))
+    }
+    from {
+        configurations.default.collect {
+            println(it.getName())
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+    exclude 'net/java/openjdk/cacio/ctc/**'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
