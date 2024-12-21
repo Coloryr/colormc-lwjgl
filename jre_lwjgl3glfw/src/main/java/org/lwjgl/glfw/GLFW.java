@@ -517,6 +517,10 @@ public class GLFW
         String windowWidth = System.getProperty(PROP_WINDOW_WIDTH);
         String windowHeight = System.getProperty(PROP_WINDOW_HEIGHT);
         if (windowWidth == null || windowHeight == null) {
+            windowWidth = System.getenv("WINDOW_WIDTH");
+            windowHeight = System.getenv("WINDOW_HEIGHT");
+        }
+        if (windowWidth == null || windowHeight == null) {
             System.err.println("Warning: Property " + PROP_WINDOW_WIDTH + " or " + PROP_WINDOW_HEIGHT + " not set, defaulting to 1280 and 720");
 
             mGLFWWindowWidth = 1280;
@@ -554,9 +558,9 @@ public class GLFW
             for (Field thisField : thisFieldArr) {
                 if (thisField.getName().startsWith("GLFW_KEY_")) {
                     mGLFWKeyCodes.put(
-                    (int) thisField.get(null),
-                    thisField.getName().substring(9, 10).toUpperCase() +
-                    thisField.getName().substring(10).replace("_", " ").toLowerCase()
+                            (int) thisField.get(null),
+                            thisField.getName().substring(9, 10).toUpperCase() +
+                                    thisField.getName().substring(10).replace("_", " ").toLowerCase()
                     );
                 }
             }
